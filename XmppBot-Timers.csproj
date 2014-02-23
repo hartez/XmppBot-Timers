@@ -63,7 +63,8 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="CountdownTimer.cs" />
-    <Compile Include="Options.cs" />
+    <Compile Include="Event.cs" />
+    <Compile Include="CountdownTimerOptions.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Reminder.cs" />
