@@ -55,9 +55,9 @@ namespace XmppBot_Timers
                         String.Format("{0} remaining...",
                             FormatRemaining(seconds - ((l + 1) * interval), unitLabels)));
 
+                // If there are any other events configured, merge them into the sequence
                 if(options.Events.Any())
                 {
-
                     var events = options.Events.OrderBy(@event => @event.Target);
 
                     var eventTimes = Interval(TimeSpan.FromSeconds(1))

@@ -9,6 +9,9 @@ namespace XmppBot_Timers
 {
     public class Options
     {
+        public Regex TimeSpanRegex = new Regex("[0-9]+[smh]");
+        private List<Event> _events;
+
         public int DurationSeconds
         {
             get { return ParseSeconds(DurationString); }
@@ -25,7 +28,8 @@ namespace XmppBot_Timers
         [Option('i', "interval", Required = true, HelpText = "The countdown interval (e.g., 2m, 1h, 5s)")]
         public string IntervalString { get; set; }
 
-        [OptionArray('f', "finish", DefaultValue = new []{"Finished!"}, Required = false, HelpText = "What to say when the countdown is over.")]
+        [OptionArray('f', "finish", DefaultValue = new[] {"Finished!"}, Required = false,
+            HelpText = "What to say when the countdown is over.")]
         public String[] FinishedMessage { get; set; }
 
         [OptionArray('e', "events", Required = false,
@@ -33,6 +37,18 @@ namespace XmppBot_Timers
                 "Things to say after specific amounts of time have passed (in the format [time] [message]. For instance, you can say -e 4m Wrap it up!"
             )]
         public String[] EventStrings { get; set; }
+
+        public IEnumerable<Event> Events
+        {
+            get
+            {
+                if(_events == null)
+                {
+                    ParseEvents();
+                }
+                return _events;
+            }
+        }
 
         public Tuple<string, string> ParseUnitLabels(string timespan)
         {
@@ -73,7 +89,7 @@ namespace XmppBot_Timers
                 switch(timespan.Last())
                 {
                     case ('h'):
-                        multiplier = 60 * 60;
+                        multiplier = 3600;
                         break;
                     case ('m'):
                         multiplier = 60;
@@ -111,20 +127,6 @@ namespace XmppBot_Timers
             return help;
         }
 
-        private List<Event> _events;
-
-        public IEnumerable<Event> Events
-        {
-            get
-            {
-                if(_events == null)
-                {
-                    ParseEvents();
-                }
-                return _events;
-            }
-        }
-
         private void ParseEvents()
         {
             _events = new List<Event>();
@@ -157,13 +159,11 @@ namespace XmppBot_Timers
                 }
             }
 
-            if (currentEvent != null)
+            if(currentEvent != null)
             {
                 _events.Add(currentEvent);
             }
         }
-
-        public Regex TimeSpanRegex = new Regex("[0-9]+[smh]");
     }
 
     public class Event
