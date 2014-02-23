@@ -7,7 +7,7 @@ using CommandLine.Text;
 
 namespace XmppBot_Timers
 {
-    public class Options
+    public class CountdownTimerOptions
     {
         public Regex TimeSpanRegex = new Regex("[0-9]+[smh]");
         private List<Event> _events;
@@ -164,11 +164,5 @@ namespace XmppBot_Timers
                 _events.Add(currentEvent);
             }
         }
-    }
-
-    public class Event
-    {
-        public long Target { get; set; }
-        public string Message { get; set; }
     }
 }

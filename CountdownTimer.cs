@@ -29,7 +29,7 @@ namespace XmppBot_Timers
                 return null;
             }
 
-            var options = new Options();
+            var options = new CountdownTimerOptions();
 
             if(!Parser.Default.ParseArguments(line.Args, options))
             {
