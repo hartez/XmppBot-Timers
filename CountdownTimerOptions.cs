@@ -28,13 +28,13 @@ namespace XmppBot_Timers
         [Option('i', "interval", Required = true, HelpText = "The countdown interval (e.g., 2m, 1h, 5s)")]
         public string IntervalString { get; set; }
 
-        [OptionArray('f', "finish", DefaultValue = new[] {"Finished!"}, Required = false,
+        [OptionArray('f', "finish", DefaultValue = new[] {"Finished!"}, Required = false,  
             HelpText = "What to say when the countdown is over.")]
         public String[] FinishedMessage { get; set; }
 
         [OptionArray('e', "events", Required = false,
             HelpText =
-                "Things to say after specific amounts of time have passed (in the format [time] [message]. For instance, you can say -e 4m Wrap it up!"
+                "Things to say after specific amounts of time have passed (in the format [time] [message]. For instance, you can say -e 4m Wrap it up!)"
             )]
         public String[] EventStrings { get; set; }
 
@@ -114,17 +114,17 @@ namespace XmppBot_Timers
             return amount * multiplier;
         }
 
-        [HelpOption]
         public string GetUsage()
         {
             var help = new HelpText
                 {
                     AddDashesToOption = true
                 };
-
-            help.AddPreOptionsLine("!countdown -d=<duration> -i=<interval> [options]");
+            
+            help.AddPreOptionsLine("!countdown -d <duration> -i <interval> [options]");
             help.AddOptions(this);
-            return help;
+            
+            return help.ToString().Replace("System.String[]", "Finished!");
         }
 
         private void ParseEvents()
@@ -154,7 +154,14 @@ namespace XmppBot_Timers
                 {
                     if(currentEvent != null)
                     {
-                        currentEvent.Message += (String.IsNullOrEmpty(currentEvent.Message) ? "" : " ") + eventString;
+                        var msg = eventString;
+
+                        if(msg.StartsWith("http"))
+                        {
+                            msg = Uri.UnescapeDataString(msg);
+                        }
+
+                        currentEvent.Message += (String.IsNullOrEmpty(currentEvent.Message) ? "" : " ") + msg;
                     }
                 }
             }

@@ -75,6 +75,7 @@
   <ItemGroup>
     <Compile Include="CountdownTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="ReminderTests.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\XmppBot-Timers.csproj">
